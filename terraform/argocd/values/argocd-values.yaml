@@ -1,0 +1,21 @@
+# Вимикаємо високі запити на ресурси для всього ArgoCD
+global:
+  resources:
+    requests:
+      cpu: "10m"
+      memory: "32Mi"
+
+server:
+  extraArgs:
+    - --insecure
+  service:
+    type: ClusterIP
+  resources:
+    limits:
+      cpu: "100m"
+      memory: "128Mi"
+
+dex:
+  enabled: false
+notifications:
+  enabled: false

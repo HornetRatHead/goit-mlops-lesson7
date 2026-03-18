@@ -1,0 +1,17 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+*.tfvars.json
+.terraform.lock.hcl
+
+# Секрети та ключі
+*.pem
+*.key
+credentials
+.aws/
+
+# Логи та тимчасові файли
+*.log
+.DS_Store

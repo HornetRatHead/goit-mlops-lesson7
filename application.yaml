@@ -1,0 +1,47 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mlflow
+  namespace: infra-tools
+spec:
+  project: default
+  source:
+    repoURL: https://community-charts.github.io/helm-charts
+    chart: mlflow
+    targetRevision: 1.8.0
+    helm:
+      values: |
+        postgresql:
+          enabled: false
+
+        tolerations:
+          - operator: "Exists"
+
+        service:
+          type: ClusterIP
+          port: 5000
+
+        # Мінімальні ресурси, щоб влізти в t3.small
+        resources:
+          requests:
+            cpu: "10m"
+            memory: "64Mi"
+          limits:
+            cpu: "50m"
+            memory: "128Mi"
+
+        # Вказуєм S3 бакет
+        artifactRoot:
+          s3:
+            enabled: true
+            bucket: my-mlflow-goit-hw7-bucket-2024
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: mlflow-app
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
